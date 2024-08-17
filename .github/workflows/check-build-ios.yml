@@ -1,0 +1,50 @@
+name: "Check Build - iOS"
+
+on:
+  push
+
+jobs:
+  check-build-ios:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: 🏗 Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: 🏗 Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "15.4"
+
+      - name: 🏗 Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: "3.3.3"
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: 🏗 Configure Maestro
+        uses: dniHze/maestro-test-action@v1
+        with:
+          version: 1.37.9
+
+      - name: 🏗 Set up simulator
+        uses: futureware-tech/simulator-action@v2
+        with:
+          model: "iPhone 14 Pro"
+
+      - name: 🚗 Start Metro
+        run: npm start &
+        shell: bash
+
+      - name: 🧪 Build, run, and test app
+        run: npm run ios && maestro test .maestro/RunThrough.yaml
+        shell: bash
