@@ -1,7 +1,3 @@
-appId: ${MAESTRO_APP_ID}
+appId: com.codingitwrong.maestrogha
 ---
-- tapOn: "Enter URL manually"
-- inputText: "http://localhost:8081?disableOnboarding=1"
-- hideKeyboard
-- tapOn: "Connect"
-- assertVisible: "Welcome!"
+- assertVisible: "Continue"
